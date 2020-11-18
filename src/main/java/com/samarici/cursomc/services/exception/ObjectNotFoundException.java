@@ -1,4 +1,4 @@
-package com.samarici.cursomc.services;
+package com.samarici.cursomc.services.exception;
 
 public class ObjectNotFoundException extends RuntimeException {
 

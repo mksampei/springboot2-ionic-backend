@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.samarici.cursomc.domain.Categoria;
 import com.samarici.cursomc.repositories.CategoriaRepository;
+import com.samarici.cursomc.services.exception.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {

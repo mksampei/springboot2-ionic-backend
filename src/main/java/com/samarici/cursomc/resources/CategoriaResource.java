@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -37,14 +39,14 @@ public class CategoriaResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT, value = "{id}")
-	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id){
+	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) {
 		obj.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "{id}")
 	public ResponseEntity<Categoria> delete(@PathVariable Integer id) {
 		service.delete(id);
@@ -55,8 +57,20 @@ public class CategoriaResource {
 	public ResponseEntity<List<CategoriaDTO>> findAll() {
 
 		List<Categoria> lista = service.findAll();
-		
+
 		List<CategoriaDTO> listaDto = lista.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listaDto);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/pages")
+	public ResponseEntity<Page<CategoriaDTO>> findPage(@RequestParam(name = "page", defaultValue = "0") Integer page,
+			@RequestParam(name = "linesPerPage", defaultValue = "24") Integer linesPerPage,
+			@RequestParam(name = "orderBy", defaultValue = "nome") String orderBy,
+			@RequestParam(name = "direction", defaultValue = "ASC") String direction) {
+
+		Page<Categoria> lista = service.findPage(page, linesPerPage, orderBy, direction);
+
+		Page<CategoriaDTO> listaDto = lista.map(obj -> new CategoriaDTO(obj));
 		return ResponseEntity.ok().body(listaDto);
 	}
 }

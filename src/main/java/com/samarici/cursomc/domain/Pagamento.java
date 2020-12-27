@@ -11,9 +11,11 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.samarici.cursomc.domain.enums.EstadoPagamento;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 public abstract class Pagamento implements Serializable {
 
 	/**
@@ -36,7 +38,7 @@ public abstract class Pagamento implements Serializable {
 	public Pagamento(Integer id, EstadoPagamento estadoPagto, Pedido pedido) {
 		super();
 		this.id = id;
-		this.estadoPagto = estadoPagto.getCod();
+		this.estadoPagto = estadoPagto==null ? null : estadoPagto.getCod();
 		this.pedido = pedido;
 	}
 

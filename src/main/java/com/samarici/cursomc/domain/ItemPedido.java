@@ -39,10 +39,18 @@ public class ItemPedido implements Serializable {
 		return this.id.getPedido();
 	}
 
+	public void setPedido(Pedido pedido) {
+		id.setPedido(pedido);
+	}
+	
 	public Produto getProduto() {
 		return this.id.getProduto();
 	}
 
+	public void setProduto(Produto produto) {
+		id.setProduto(produto);
+	}
+	
 	public ItemPedidoPk getId() {
 		return id;
 	}
@@ -75,6 +83,10 @@ public class ItemPedido implements Serializable {
 		this.preco = preco;
 	}
 
+	public double getSubTotal() {
+		return (preco - desconto) * quantidade;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
